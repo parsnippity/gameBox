@@ -27,3 +27,80 @@ multiplayer -(Locally)*/
 //Bree wins! 00.36 Number 5 on the leaderboard! Congratulations!
 //Cocoa wins! 00.50! New best score
 //Home page Bree Best score: 00.36 Leaderboard No5
+// const express = require("express");
+// const app = express();
+// const path = require("path");
+
+// app.use(express.static("./views/public"));
+// app.use(express.urlencoded({extended: false}));
+// app.use(express.json());
+// app.get("/", (req, res) => {
+//     res.sendFile(path.join(__dirname, "/public/index.html"));
+// })
+// app.get("/game", (req, res) => {
+//     res.sendFile(path.join(__dirname, "/public/game.html"));
+// })
+// app.listen(3000, () => {
+//     console.log("Listening on port 3000")
+// })
+
+//login walkthrough stuff
+/*User login
+Register
+Scoreboard - Top 10
+Post Game Screen (what I have is good)
+Save Points (number of wins) to mongoose
+make register and login and scoreboard pages
+make css and js import to ejs(works on welcome, check/finish game)*/
+
+const express = require("express");
+const session = require("express-session");
+const flash = require("connect-flash");
+const morgan = require("morgan");
+const mongoose = require("mongoose");
+const expressEJSLayout = require("express-ejs-layouts");
+const passport = require("passport");
+//we tell it where the local strategy is
+require("./config/passport")(passport);
+require("dotenv").config();
+const router = express.Router();
+const app = express();
+
+try {
+    mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true})
+    .then(() => console.log(`connected on Port: ${process.env.PORT}`))
+    .catch((err) => {console.log(err)})
+} catch(error) {
+    console.log(error);
+}
+
+app.use(express.static("./views/public"));
+//Development tools
+app.use(morgan("tiny"))
+//EJS
+app.set("view engine", "ejs");
+app.use(expressEJSLayout);
+//Body parser
+app.use(express.urlencoded({extended: false}));
+//express session
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+//use flash messaging -- express
+//sets that up
+app.use(flash());
+app.use((req, res, next) => {
+    res.locals.success_msg = req.flash("success_msg");
+    res.locals.error_msg = req.flash("error_msg");
+    res.locals.error = req.flash("error");
+    next();
+})
+//Routes
+app.use("/", require("./routes/index"));
+app.use("/users", require("./routes/users"));
+app.use('/public', express.static('./views/public'))
+app.listen(process.env.PORT || 3000)

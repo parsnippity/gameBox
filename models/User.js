@@ -1,15 +1,30 @@
-const mongoose = require("mongoose");
-const userSchema = new mongoose.Schema({
-    name: {
-        type:String,
-        maxLength:[20, "The name cannot exceed 20 characters"]
+const mongoose = require('mongoose');
+const UserSchema  = new mongoose.Schema({
+    firstName :{
+        type  : String,
+        required : true
+    } ,
+    lastName :{
+        type  : String,
+        required : true
+    } ,
+    email :{
+        type  : String,
+        required : true
+    } ,
+    password :{
+        type  : String,
+        required : true
+    } ,
+    date :{
+        type : Date,
+        default : Date.now
     },
-    id:{
-        type:Number
-    },
-    age:{
-        type:Number
+    wins: {
+        type: Number,
+        default: 0
     }
-}, {collection: "users"})
+},{collection : 'Users'});
+const User= mongoose.model('User',UserSchema);
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = User;

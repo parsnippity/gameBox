@@ -1,5 +1,4 @@
-let loadPage = function() {
-    let turn = this.getElementById("turn");
+    let turn = document.getElementById("turn");
     let color = document.getElementById("color");
     let board = document.getElementById("board");
     let message = document.getElementById("message");
@@ -7,18 +6,23 @@ let loadPage = function() {
     let quitGame = document.getElementById("quitGame");
     let playerName = document.getElementById("quietName").innerHTML;
     let guestName = sessionStorage.getItem("guestName");
+    console.log(guestName);
     let quitTime = false;
+    let final = false;
     let people = [playerName, guestName];
-    let colors = ["yellow", "red"];
+    let colors = ["Yellow", "Red"];
     let createNewGame = function() {
         quitGame.removeAttribute("href");
         quitTime = false;
+        final = false;
         let whoseTurn = people[0];
         let whoseColor = colors[0];
         let won = false;
         message.innerHTML = "";
         turn.innerHTML = `${whoseTurn}'s Turn!`
         color.innerHTML = whoseColor;
+        color.classList.remove("text" + colors[0], "text" + colors[1]);
+        color.classList.add("text" + whoseColor);
         board.innerHTML = "";
         for(let i = 0; i < 42; i++) {
             let box = document.createElement("img");
@@ -43,7 +47,7 @@ let loadPage = function() {
         for(let i = 0; i < 7; i++) {
             let thisColumn = document.querySelectorAll(`.column${i + 1}`);
             thisColumn.forEach((item) => {
-                item.addEventListener("click", function(e) {
+                item.addEventListener("click", async function(e) {
                     message.innerHTML = "";
                     quitGame.removeAttribute("href");
                     quitTime = false;
@@ -51,11 +55,11 @@ let loadPage = function() {
                         let done = false;
                         let change = true;
                         for(let i = 0; i < thisColumn.length; i++) {
-                            if((thisColumn[i].classList.contains("red") || thisColumn[i].classList.contains("yellow")) && i == 0) {
+                            if((thisColumn[i].classList.contains("Red") || thisColumn[i].classList.contains("Yellow")) && i == 0) {
                                 change = false;
                                 done = true;
                                 message.innerHTML = "You can't go there! Try again";
-                            } else if((thisColumn[i].classList.contains("red") || thisColumn[i].classList.contains("yellow")) && i != 0 && !done){
+                            } else if((thisColumn[i].classList.contains("Red") || thisColumn[i].classList.contains("Yellow")) && i != 0 && !done){
                                 thisColumn[i - 1].classList.add(whoseColor);
                                 done = true;
                                 message.innerHTML = "";
@@ -144,18 +148,22 @@ let loadPage = function() {
                             }
                             turn.innerHTML = `${whoseTurn}'s Turn!`
                             color.innerHTML = whoseColor;
+                            color.classList.remove("text" + colors[0], "text" + colors[1]);
+                            color.classList.add("text" + whoseColor);
                         }
                     }
-                    if(won) {
+                    if(won && !final) {
+                        final = true;
                         turn.innerHTML = `${whoseTurn} won!`;
+                        await axios.get("/users/won", {});
                     }
                 })
             })
         }
     }
-    createNewGame();
-    newGame.addEventListener("click", createNewGame);
-    quitGame.addEventListener("click", function(e) {
+createNewGame();
+newGame.addEventListener("click", createNewGame);
+quitGame.addEventListener("click", function(e) {
         if(quitTime) {
             location.assign("/")
             quitTime = false;
@@ -163,7 +171,4 @@ let loadPage = function() {
             message.innerHTML = "Are you sure you want to quit to the home screen?";
             quitTime = true;
         }
-    })
-}
-
-module.exports = {loadPage};
+})

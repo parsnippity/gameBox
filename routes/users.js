@@ -3,10 +3,10 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const User = require("../models/user")
-
+const {checkAuthenticatedTwo} = require("../config/auth")
 
 //login handler
-router.get("/login", (req, res) => {
+router.get("/login", checkAuthenticatedTwo, (req, res) => {
     res.render("pages/login")
 })
 
@@ -66,7 +66,8 @@ router.post("/register", (req, res) => {
                     firstName: firstName,
                     lastName: lastName,
                     email: email,
-                    password: password
+                    password: password,
+                    wins: 0
                 })
                 //hash password (10 is a good number, much higher will break, because it will run through too many times)
                 bcrypt.genSalt(10, (err, salt) => {
@@ -108,5 +109,14 @@ router.get("/logout", (req, res) => {
     res.redirect("/")
 })
 
+router.get("/won", (req, res) => {
+    req.user.save({wins: req.user.wins++})
+    res.send({success: true})
+})
+
+router.get("/topTen", async(req, res) => {
+    const array = await User.find({})
+    res.json(array);    
+})
 
 module.exports = router;

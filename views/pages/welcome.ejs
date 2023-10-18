@@ -18,26 +18,35 @@
 
 <body>
     <main>
-        <h1>Connect Four</h1>
+        <div id="everything">
+        <h1 class="title">Connect Four</h1>
+        <div id="players">
         <div id="playerOne">
-            <h2><%=(typeof user.firstName != "undefined" ? user.firstName : "Player") + " " + (typeof user.lastName != "undefined" ? user.lastName : "One")%></h2>
-            <h4>Number of wins: <%=user.wins || 0%></h4>
+            <h3><%=(typeof user.firstName != "undefined" ? user.firstName : "Player") + " " + (typeof user.lastName != "undefined" ? user.lastName : "One")%></h3>
+            <h5>Number of wins: <% if (user.wins==0 || user.wins) { %>
+                <%=user.wins%>
+            <% } else { %>
+            <% ""}%></h5>
             <a href="/users/<%= typeof user.firstName != 'undefined' ? 'logout' : 'login' %>"><button><%= typeof user.firstName !='undefined' ? 'Logout' : 'Login' %></button></a>
+            <a href="/users/register"><button>Register New User</button></a>
         </div>
         <div id="playerTwo">
-            <h2>Guest</h2>
+            <h3>Guest</h3>
             <label for="guestName">Enter name for guest:</label>
+            <br>
             <input type="text" id="guestName" value="<%= typeof guestName != 'undefined' ? guestName : 'Guest' %>">
         </div>
-        <a href="/game" id="playBtn"><button>Play</button></a>
-        <a href="/users/register"><button>Register</button></a>
+        </div>
+        <a href="/game" id="playBtn"><button>Start Game</button></a>
         <a href="/scoreboard"><button>Scoreboard</button></a>
+        </div>
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
         integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
         crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.js"
         integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
-    <%utils.addFunction()%>
+    <script src="../public/home.js">
+    </script>
 </body>
 </html>

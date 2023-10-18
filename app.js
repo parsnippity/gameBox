@@ -44,14 +44,9 @@ multiplayer -(Locally)*/
 //     console.log("Listening on port 3000")
 // })
 
-//login walkthrough stuff
-/*User login
-Register
-Scoreboard - Top 10
-Post Game Screen (what I have is good)
-Save Points (number of wins) to mongoose
-make register and login and scoreboard pages
-make css and js import to ejs(works on welcome, check/finish game)*/
+/*
+make Scoreboard - Top 10
+style register and login and home pages and some of game*/
 
 const express = require("express");
 const session = require("express-session");
@@ -70,13 +65,14 @@ try {
     mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true})
     .then(() => console.log(`connected on Port: ${process.env.PORT}`))
     .catch((err) => {console.log(err)})
-} catch(error) {
-    console.log(error);
+} catch(err) {
+    console.log(err);
 }
 
 app.use(express.static("./views/public"));
 //Development tools
 app.use(morgan("tiny"))
+app.use(express.json());
 //EJS
 app.set("view engine", "ejs");
 app.use(expressEJSLayout);

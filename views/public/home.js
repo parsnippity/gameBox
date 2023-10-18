@@ -1,10 +1,7 @@
-let addFunction = function() {
-    let playBtn = document.getElementById("playBtn");
-    playBtn.addEventListener("click", function(e) {
-        sessionStorage.setItem("guestName", document.getElementById("guestName").value);
-    })
-}
-module.exports = {addFunction};
+let playBtn = document.getElementById("playBtn");
+playBtn.addEventListener("click", function(e) {
+    sessionStorage.setItem("guestName", document.getElementById("guestName").value);
+})
 
 // let playerOne = document.getElementById("playerOne");
 // let playerTwo = document.getElementById("playerTwo");
@@ -58,5 +55,3 @@ module.exports = {addFunction};
 // } else {
 //     insertPlayer(signedInTwo);
 // }
-
-module.exports = [];

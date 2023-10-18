@@ -19,9 +19,9 @@
 <body>
     <main>
         <span class="invisible" id="quietName"><%=user.firstName%></span>
-        <span class="invisible" id="quietEmail"><%=user.email%></span>
         <div id="top-section">
-            <h1 id="turn"></h1>
+            <h1 class="title">Connect Four</h1>
+            <h3 id="turn"></h3>
             <h5 id="color"></h5>
             <h5 id="message"></h5>
             <button id="newGame">New Game</button>
@@ -34,6 +34,7 @@
         integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
         crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
-    <%utils.loadPage()%>
+    <script src="../public/game.js">
+    </script>
 </body>
 </html>

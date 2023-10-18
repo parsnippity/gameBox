@@ -3,7 +3,6 @@ const ensureAuthenticated = (req, res, next) => {
         //req.isAuthenticated will return true if the user is logged in
         next()
     } else {
-        console.log(req);
         req.flash("error_msg", "please login before you start playing")
         res.redirect("/users/login");
     }
@@ -13,7 +12,6 @@ const checkAuthenticated = (req, res, next) => {
         //req.isAuthenticated will return true if the user is logged in
         next()
     } else {
-        console.log(req);
         res.redirect("/");
     }
 }
